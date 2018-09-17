@@ -149,12 +149,7 @@ public final class JobPollAction implements Action {
 		return enabled;
 	}
 
-	public String getTargetName() {
-		String name = "";
-		if(target.getName() != null) {
-			name = target.getName().replaceAll(" ", "%20");
-		}
-
-		return name;
+	public String getUrl() {
+		return target.getUrl();
 	}
 }
