@@ -30,10 +30,9 @@ import hudson.scm.SCM;
 import hudson.model.AbstractProject;
 import hudson.triggers.SCMTrigger;
 import hudson.triggers.SCMTrigger.SCMAction;
+import jenkins.triggers.SCMTriggerItem;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -132,8 +131,8 @@ public final class JobPollAction implements Action {
 			enabled = project.getScm().supportsPolling() && project.getTrigger(SCMTrigger.class) != null;
 		} else {
 			try {
-				if (target.getClass().getMethod("getSCMTrigger").invoke(target) != null) {
-					Collection<? extends SCM> scms = (Collection<? extends SCM>) target.getClass().getMethod("getSCMs").invoke(target);
+				if (target instanceof SCMTriggerItem) {
+					Collection<? extends SCM> scms = ((SCMTriggerItem) target).getSCMs();
 					for (Iterator<? extends SCM> i = scms.iterator(); i.hasNext(); ) {
 						SCM scm = i.next();
 						if (scm.supportsPolling()) {
